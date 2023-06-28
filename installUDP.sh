@@ -948,9 +948,10 @@ perform_install() {
 		echo
 		echo "$D"
 		echo
-		echo "crear usuario manualmente"
+		echo " UDP PARA APPS PERSONALIZADAS"
+		echo " SCRIPT UDP INSTALADO CON EXITO"
 		echo
-		echo "useradd -M -s /bin/false NOMBRE; (echo 'CONTRA'; echo 'CONTRA')|passwd NOMBRE"
+		echo " telegram: @lacasitamx @conectedmx_bot @conectedmx"
 		echo
 	else
 		restart_running_services
