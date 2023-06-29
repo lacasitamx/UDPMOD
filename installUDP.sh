@@ -4,10 +4,15 @@
 #
 
 clear
+if [[ ! -e /etc/domin ]]; then
 echo
 read -p ' INGRESA TU DOMINIO: ' DOMAIN
+echo "$DOMAIN" > /etc/domin
 echo
-
+else
+DOMAIN=$(cat /etc/domin)
+echo
+fi
 set -e
 
 ###
