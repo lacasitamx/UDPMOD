@@ -650,7 +650,7 @@ parse_arguments() {
 
 # /etc/systemd/system/udpmod-server.service
 tpl_udpmod_server_service_base() {
-#  local _config_name="$1"
+local _config_name="$1"
 
   cat << EOF > /etc/systemd/system/udpmod-server.service
 [Unit]
@@ -667,6 +667,7 @@ ExecStart=/usr/local/bin/udpmod -config /etc/udpmod/config.json server
 [Install]
 WantedBy=multi-user.target
 EOF
+chmod 777 /etc/systemd/system/udpmod-server.service
 }
 
 # /etc/systemd/system/udpmod-server.service
@@ -700,6 +701,7 @@ tpl_etc_udpmod_config_json() {
          }
 }
 EOF
+chmod 777 /etc/udpmod/config.json
 }
 
 
