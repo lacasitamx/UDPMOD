@@ -1048,8 +1048,7 @@ main() {
 	check_udpmod_user "udpmod"
 	check_udpmod_homedir "/var/lib/$UDPMOD_USER"
 	case "$OPERATION" in
-			 "install") inicio
-			 						perform_install;;
+			 "install") perform_install;;
 				"remove") perform_remove;;
 	"check_update") perform_check_update;;
 							 *) error "Unknown operation '$OPERATION'.";;
