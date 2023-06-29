@@ -22,7 +22,7 @@ BINARY_URL="https://github.com/lacasitamx/UDPMOD/raw/main"
 #DOMAIN="tu dominio aqui"
 
 # OBFS, CAPA EXTRA DE SIFRADO DE PUNTO A PUNTO
-OBFS=$(head /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 8)
+OBFS="lacasitamx"
 
 # =============================================================
 
@@ -911,7 +911,7 @@ inicio(){
 perform_install() {
 	local _is_frash_install
 	if ! is_udpmod_installed; then
-		inicio
+		#inicio
 		_is_frash_install=1
 	fi
 		
