@@ -959,6 +959,9 @@ perform_remove() {
 	stop_running_services
 	perform_remove_hysteria_systemd
 	
+			rm -f /etc/systemd/system/multi-user.target.wants/hysteria-server.service
+   rm -f /etc/systemd/system/multi-user.target.wants/hysteria-server@*.service
+   systemctl daemon-reload &>/dev/null
 	echo
 	echo -e "$(tbold)Congratulation! Lacasitamx-UDP has been successfully removed from your server.$(treset)"
 	echo
@@ -970,11 +973,12 @@ perform_remove() {
 		fi
 		if [[ "x$FORCE_NO_SYSTEMD" != "x2" ]]; then
 			echo
-			echo -e "You still might need to disable all related systemd services with the following commands:"
+			echo -e "Es posible que aún necesites deshabilitar todos los servicios systemd relacionados con los siguientes comandos:"
 			echo
 			echo -e "\t$(tred)rm -f /etc/systemd/system/multi-user.target.wants/hysteria-server.service$(treset)"
 			echo -e "\t$(tred)rm -f /etc/systemd/system/multi-user.target.wants/hysteria-server@*.service$(treset)"
 			echo -e "\t$(tred)systemctl daemon-reload$(treset)"
+   
 			fi
 			echo
 }
