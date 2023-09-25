@@ -82,13 +82,13 @@ HYSTERIA_HOME_DIR="${HYSTERIA_HOME_DIR:-}"
 OPERATION=
 
 # User specified version to install
-VERSION=
+VERSION=app/v2.0.2
 
 # Force install even if installed
 FORCE=
 
 # User specified binary to install
-LOCAL_FILE=
+LOCAL_FILE=/tmp
 
 
 ###
@@ -581,7 +581,7 @@ parse_arguments() {
 			OPERATION='remove'
 			;;
 		'--version')
-		VERSION="$2"
+		#VERSION="$2"
 		if [[ -z "$VERSION" ]]; then
 			show_argument_error_and_exit "Please specify the version for option '--version'."
 			fi
@@ -603,7 +603,7 @@ parse_arguments() {
 			show_usage_and_exit
 			;;
 			'-l' | '--local')
-			LOCAL_FILE="$2"
+			#LOCAL_FILE="$2"
 			if [[ -z "$LOCAL_FILE" ]]; then
 				show_argument_error_and_exit "Please specify the local binary to install for option '-l' or '--local'."
 				fi
@@ -836,7 +836,7 @@ perform_install_hysteria_binary() {
 	if [[ -n "$LOCAL_FILE" ]]; then
 		note "Performing local install: $LOCAL_FILE"
 		
-		echo -ne "Installing hysteria executable ... "
+		echo -ne "Instalando hysteria ejecutable ... "
 		
 		if install -Dm755 "$LOCAL_FILE" "$EXECUTABLE_INSTALL_PATH"; then
 			echo "ok"
@@ -965,6 +965,9 @@ perform_remove() {
 	echo -e "You still need to remove configuration files and ACME certificates manually with the following commands:"
 	echo
 	echo -e "\t$(tred)rm -rf "$CONFIG_DIR"$(treset)"
+	rm -f /etc/systemd/system/multi-user.target.wants/hysteria-server.service
+	rm -f /etc/systemd/system/multi-user.target.wants/hysteria-server@*.service
+	systemctl daemon-reload
 	if [[ "x$HYSTERIA_USER" != "xroot" ]]; then
 		echo -e "\t$(tred)userdel -r "$HYSTERIA_USER"$(treset)"
 		fi
