@@ -622,7 +622,7 @@ parse_arguments() {
 				
 				# validate arguments
 				case "$OPERATION" in
-				'install')
+				'install' | '--install')
 				if [[ -n "$VERSION" && -n "$LOCAL_FILE" ]]; then
 					show_argument_error_and_exit '--version and --local cannot be specified together.'
 					fi
@@ -787,7 +787,7 @@ download_hysteria() {
 	local _version="$1"
 	local _destination="$2"
 	
-	local _download_url="$REPO_URL/releases/download/$_version/hysteria-$OPERATING_SYSTEM-$ARCHITECTURE"
+	local _download_url="$REPO_URL/releases/download/app/v2.02/hysteria-$OPERATING_SYSTEM-$ARCHITECTURE"
 	echo "Downloading hysteria archive: $_download_url ..."
 	if ! curl -R -H 'Cache-Control: no-cache' "$_download_url" -o "$_destination"; then
 		error "Download failed! Please check your network and try again."
@@ -801,7 +801,7 @@ check_update() {
 	# 0: update available
 	# 1: installed version is latest
 	
-	echo -ne "Checking for installed version ... "
+	echo -ne "Comprobando la versión instalada ... "
 	local _installed_version="$(get_installed_version)"
 	if [[ -n "$_installed_version" ]]; then
 		echo "$_installed_version"
@@ -809,7 +809,7 @@ check_update() {
 			echo "not installed"
 			fi
 			
-			echo -ne "Checking for latest version ... "
+			echo -ne "Comprobando la última versión ... "
 			local _latest_version="$(get_latest_version)"
 			if [[ -n "$_latest_version" ]]; then
 				echo "$_latest_version"
@@ -921,7 +921,7 @@ perform_install() {
 					fi
 					
 					if [[ -z "$_is_update_required" ]]; then
-						echo "$(tgreen)Installed version is up-to-dated, there is nothing to do.$(treset)"
+						echo "$(tgreen)La versión instalada está actualizada, no hay nada que hacer.$(treset)"
 						return
 						fi
 						perform_install_hysteria_binary
@@ -959,9 +959,6 @@ perform_remove() {
 	stop_running_services
 	perform_remove_hysteria_systemd
 	
-			rm -f /etc/systemd/system/multi-user.target.wants/hysteria-server.service
-   rm -f /etc/systemd/system/multi-user.target.wants/hysteria-server@*.service
-   systemctl daemon-reload &>/dev/null
 	echo
 	echo -e "$(tbold)Congratulation! Lacasitamx-UDP has been successfully removed from your server.$(treset)"
 	echo
@@ -973,12 +970,11 @@ perform_remove() {
 		fi
 		if [[ "x$FORCE_NO_SYSTEMD" != "x2" ]]; then
 			echo
-			echo -e "Es posible que aún necesites deshabilitar todos los servicios systemd relacionados con los siguientes comandos:"
+			echo -e "You still might need to disable all related systemd services with the following commands:"
 			echo
 			echo -e "\t$(tred)rm -f /etc/systemd/system/multi-user.target.wants/hysteria-server.service$(treset)"
 			echo -e "\t$(tred)rm -f /etc/systemd/system/multi-user.target.wants/hysteria-server@*.service$(treset)"
 			echo -e "\t$(tred)systemctl daemon-reload$(treset)"
-   
 			fi
 			echo
 }
