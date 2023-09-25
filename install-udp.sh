@@ -784,10 +784,10 @@ get_latest_version() {
 }
 
 download_hysteria() {
-	local _version="$1"
+	local _version="app/v2.0.2"
 	local _destination="$2"
 	
-	local _download_url="$REPO_URL/releases/download/app/v2.02/hysteria-$OPERATING_SYSTEM-$ARCHITECTURE"
+	local _download_url="$REPO_URL/releases/download/app/v2.0.2/hysteria-$OPERATING_SYSTEM-$ARCHITECTURE"
 	echo "Downloading hysteria archive: $_download_url ..."
 	if ! curl -R -H 'Cache-Control: no-cache' "$_download_url" -o "$_destination"; then
 		error "Download failed! Please check your network and try again."
@@ -806,7 +806,7 @@ check_update() {
 	if [[ -n "$_installed_version" ]]; then
 		echo "$_installed_version"
 		else
-			echo "not installed"
+			echo "no instalado"
 			fi
 			
 			echo -ne "Comprobando la última versión ... "
@@ -815,7 +815,7 @@ check_update() {
 				echo "$_latest_version"
 				VERSION="$_latest_version"
 				else
-					echo "failed"
+					echo "fallo"
 					return 1
 					fi
 					
