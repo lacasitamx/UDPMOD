@@ -11,7 +11,7 @@ green() {
 yellow() {
     echo -e "\033[33m\033[01m$1\033[0m"
 }
-
+PASSWORD=""
 RED="\033[31m"      # Error message
 GREEN="\033[32m"    # Success message
 YELLOW="\033[33m"   # Warning message
@@ -123,9 +123,17 @@ makeConfig() {
     "listen": ":$PORT",
     "cert": "/root/Hysteria/cert.crt",
     "key": "/root/Hysteria/private.key",
-    "obfs": "$OBFS"
-    "up_mbps": 100,
-    "down_mbps": 100
+    "up": "50 Mbps",
+  "up_mbps": 100,
+  "down": "50 Mbps",
+  "down_mbps": 100,
+  "disable_udp": false,
+  "obfs": "$OBFS",
+    "auth": {
+	"mode": "system",
+	"config": ["$PASSWORD"]
+         }
+    
 
 }
 EOF
@@ -155,7 +163,7 @@ WantedBy=multi-user.target
 [Service]
 Type=simple
 WorkingDirectory=/root/Hysteria
-ExecStart=/usr/bin/hysteria -config /root/Hysteria/server.json server
+ExecStart=/usr/bin/hysteria --config /root/Hysteria/server.json server
 Restart=always
 TEXT
 }
