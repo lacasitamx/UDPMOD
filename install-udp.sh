@@ -82,13 +82,13 @@ HYSTERIA_HOME_DIR="${HYSTERIA_HOME_DIR:-}"
 OPERATION=
 
 # User specified version to install
-VERSION=app/v2.0.2
+VERSION=
 
 # Force install even if installed
 FORCE=
 
 # User specified binary to install
-LOCAL_FILE=/tmp
+LOCAL_FILE=
 
 
 ###
@@ -657,7 +657,7 @@ User=root
 Group=root
 WorkingDirectory=/etc/hysteria
 Environment="PATH=/usr/local/bin/hysteria"
-ExecStart=/usr/local/bin/hysteria -config /etc/hysteria/config.json server
+ExecStart=/usr/local/bin/hysteria --config /etc/hysteria/config.json server
 
 [Install]
 WantedBy=multi-user.target
@@ -784,16 +784,32 @@ get_latest_version() {
 }
 
 download_hysteria() {
-	local _version="app/v2.0.2"
-	local _destination="$2"
-	
-	local _download_url="$REPO_URL/releases/download/app/v2.0.2/hysteria-$OPERATING_SYSTEM-$ARCHITECTURE"
-	echo "Downloading hysteria archive: $_download_url ..."
-	if ! curl -R -H 'Cache-Control: no-cache' "$_download_url" -o "$_destination"; then
-		error "Download failed! Please check your network and try again."
-		return 11
-		fi
-		return 0
+	version=$(curl -Ls "https://api.github.com/repos/HyNetwork/Hysteria/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+    if [[ ! -n "$version" ]]; then
+        red "No se pudo detectar la versión de Hysteria. Es posible que se haya excedido el límite de la API de Github. Vuelve a intentarlo más tarde."
+        exit 1
+    fi
+        get_arch=`arch`
+    if [ $get_arch = "x86_64" ];then
+        wget -q -O /usr/local/bin/hysteria --no-check-certificate https://github.com/apernet/hysteria/releases/download/${version}/hysteria-linux-amd64
+    elif [ $get_arch = "aarch64" ];then
+        wget -q -O /usr/local/bin/hysteria --no-check-certificate https://github.com/apernet/hysteria/releases/download/${version}/hysteria-linux-arm64
+    elif [ $get_arch = "mips64" ];then
+        wget -q -O /usr/local/bin/hysteria --no-check-certificate https://github.com/apernet/hysteria/releases/download/${version}/hysteria-linux-mipsle
+	elif [ $get_arch = "s390x" ];then
+		wget -q -O /usr/local/bin/hysteria --no-check-certificate https://github.com/apernet/hysteria/releases/download/${version}/hysteria-linux-s390x
+	elif [ $get_arch = "i686" ];then
+		wget -q -O /usr/local/bin/hysteria --no-check-certificate https://github.com/apernet/hysteria/releases/download/${version}/hysteria-linux-386
+    else
+        echo "Error[OS Message]:${get_arch}\nPlease open a issue to https://github.com/emptysuns/Hi_Hysteria/issues !"
+        exit
+    fi
+	if [ -f "/usr/local/bin/hysteria" ]; then
+		chmod 755 /usr/local/bin/hysteria
+		echo -e "\nDownload completed."
+	else
+		echo "Network Error: Can't connect to Github!"
+	fi
 }
 
 check_update() {
