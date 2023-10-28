@@ -849,34 +849,34 @@ check_update() {
 ###
 
 perform_install_hysteria_binary() {
-	if [[ -n "$LOCAL_FILE" ]]; then
+	#if [[ -n "$LOCAL_FILE" ]]; then
 		note "Performing local install: $LOCAL_FILE"
 		
 		echo -ne "Instalando hysteria ejecutable ... "
 		
-		if install -Dm755 "$LOCAL_FILE" "$EXECUTABLE_INSTALL_PATH"; then
-			echo "ok"
-			else
-				exit 2
-				fi
+		#if install -Dm755 "$LOCAL_FILE" "$EXECUTABLE_INSTALL_PATH"; then
+			#echo "ok"
+			#else
+				#exit 2
+				#fi
 				
-				return
-				fi
+				#return
+				#fi
 				
-				local _tmpfile=$(mktemp)
-				
-				if ! download_hysteria "$VERSION" "$_tmpfile"; then
-					rm -f "$_tmpfile"
-					exit 11
-					fi
+				#local _tmpfile=$(mktemp)
+				download_hysteria
+				#if ! download_hysteria "$VERSION" "$_tmpfile"; then
+					#rm -f "$_tmpfile"
+					#exit 11
+					#fi
 					
-					echo -ne "Installing hysteria executable ... "
+					#echo -ne "Installing hysteria executable ... "
 					
-					if install -Dm755 "$_tmpfile" "$EXECUTABLE_INSTALL_PATH"; then
-						echo "ok"
-						else
-							exit 13
-							fi
+					#if install -Dm755 "$_tmpfile" "$EXECUTABLE_INSTALL_PATH"; then
+						#echo "ok"
+						#else
+							#exit 13
+							#fi
 							
 							rm -f "$_tmpfile"
 }
