@@ -786,14 +786,15 @@ get_latest_version() {
 }
 
 download_hysteria() {
-	version=$(curl -Ls "https://api.github.com/repos/HyNetwork/Hysteria/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-    if [[ ! -n "$version" ]]; then
-        red "No se pudo detectar la versión de Hysteria. Es posible que se haya excedido el límite de la API de Github. Vuelve a intentarlo más tarde."
-        exit 1
-    fi
+	#version=$(curl -Ls "https://api.github.com/repos/HyNetwork/Hysteria/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+	version=app/v2.0.4
+#    if [[ ! -n "$version" ]]; then
+    #    red "No se pudo detectar la versión de Hysteria. Es posible que se haya excedido el límite de la API de Github. Vuelve a intentarlo más tarde."
+      #  exit 1
+ #   fi
         get_arch=`arch`
     if [ $get_arch = "x86_64" ];then
-        wget -q -O /usr/local/bin/hysteria --no-check-certificate https://github.com/apernet/hysteria/releases/download/${version}/hysteria-linux-amd64
+        wget -q -O /usr/local/bin/hysteria --no-check-certificate https://github.com/apernet/hysteria/releases/download/app/${version}/hysteria-linux-amd64
     elif [ $get_arch = "aarch64" ];then
         wget -q -O /usr/local/bin/hysteria --no-check-certificate https://github.com/apernet/hysteria/releases/download/${version}/hysteria-linux-arm64
     elif [ $get_arch = "mips64" ];then
@@ -885,7 +886,6 @@ perform_install_hysteria_binary() {
 
 perform_remove_hysteria_binary() {
 	remove_file "$EXECUTABLE_INSTALL_PATH"
- rm /etc/domin
 }
 
 perform_install_hysteria_example_config() {
@@ -1062,7 +1062,7 @@ start_services() {
 	perform_install
 	break
 	;;
-	-r)
+	-re)
 	perform_remove
 	break
 	;;
