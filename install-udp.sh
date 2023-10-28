@@ -10,7 +10,7 @@ DOMAIN=$(cat /etc/domin)
 echo
 fi
 
-set -e
+#set -e
 
 
 ###
@@ -645,9 +645,9 @@ parse_arguments() {
 
 # /etc/systemd/system/hysteria-server.service
 tpl_hysteria_server_service_base() {
-  local _config_name="$1"
+  #local _config_name="$1"
 
-  cat << EOF
+  cat << EOF >/etc/systemd/system/hysteria-server.service
 [Unit]
 Description=Histeria-UDP Service
 After=network.target
@@ -657,7 +657,7 @@ User=root
 Group=root
 WorkingDirectory=/etc/hysteria
 Environment="PATH=/usr/local/bin/hysteria"
-ExecStart=/usr/local/bin/hysteria --config /etc/hysteria/config.json server
+ExecStart=/usr/local/bin/hysteria -c /etc/hysteria/config.json server
 
 [Install]
 WantedBy=multi-user.target
@@ -666,7 +666,9 @@ EOF
 
 # /etc/systemd/system/hysteria-server.service
 tpl_hysteria_server_service() {
-  tpl_hysteria_server_service_base 'config'
+  tpl_hysteria_server_service_base 
+  systemctl enable hysteria-server &>/dev/null
+  systemctl start hysteria-server &>/dev/null
 }
 
 # /etc/systemd/system/hysteria-server@.service
@@ -676,7 +678,7 @@ tpl_hysteria_server_x_service() {
 
 # /etc/hysteria/config.json
 tpl_etc_hysteria_config_json() {
-  cat << EOF
+  cat << EOF >/etc/hysteria/config.json
 {
   "listen": "$UDP_PORT",
   "protocol": "$PROTOCOL",
@@ -687,7 +689,7 @@ tpl_etc_hysteria_config_json() {
   "down": "100 Mbps",
   "down_mbps": 100,
   "disable_udp": false,
-  "obfs": "$OBFS",
+  "obfs": "lacasitamx",
   "auth": {
 	"mode": "$MODE",
 	"config": ["$PASSWORD"]
@@ -887,17 +889,18 @@ perform_remove_hysteria_binary() {
 
 perform_install_hysteria_example_config() {
 	if [[ ! -d "$CONFIG_DIR" ]]; then
-		install_content -Dm644 "$(tpl_etc_hysteria_config_json)" "$CONFIG_DIR/config.json"
+		tpl_etc_hysteria_config_json #" "$CONFIG_DIR/config.json"
+		chmod 777 /etc/hysteria/config.json
 		fi
 }
 
 perform_install_hysteria_systemd() {
-	if [[ "x$FORCE_NO_SYSTEMD" == "x2" ]]; then
-		return
-		fi
+	#if [[ "x$FORCE_NO_SYSTEMD" == "x2" ]]; then
+		#return
+		#fi
 		
-		install_content -Dm644 "$(tpl_hysteria_server_service)" "$SYSTEMD_SERVICES_DIR/hysteria-server.service"
-		install_content -Dm644 "$(tpl_hysteria_server_x_service)" "$SYSTEMD_SERVICES_DIR/hysteria-server@.service"
+		tpl_hysteria_server_service #" "$SYSTEMD_SERVICES_DIR/hysteria-server.service"
+		#tpl_hysteria_server_x_service #" "$SYSTEMD_SERVICES_DIR/hysteria-server@.service"
 		
 		systemctl daemon-reload
 }
@@ -910,11 +913,11 @@ perform_remove_hysteria_systemd() {
 }
 
 perform_install_hysteria_home_legacy() {
-	if ! is_user_exists "$HYSTERIA_USER"; then
+	#if ! is_user_exists "$HYSTERIA_USER"; then
 		echo -ne "Creating user $HYSTERIA_USER ... "
 		useradd -r -d "$HYSTERIA_HOME_DIR" -m "$HYSTERIA_USER"
 		echo "ok"
-		fi
+		#fi
 }
 
 perform_install() {
@@ -1047,28 +1050,29 @@ start_services() {
 
 
 
-main() {
-	#parse_arguments "$@"
+
 	check_permission
 	check_environment
 	check_hysteria_user "hysteria"
 	check_hysteria_homedir "/var/lib/$HYSTERIA_USER"
-	#case "$OPERATION" in
-	#"install")
+	while :; do
+  case $1 in
+	-i)
 	perform_install
-	#;;
-	#"remove")
-	#perform_remove
-	#;;
+	break
+	;;
+	-re)
+	perform_remove
+	break
+	;;
 	#"check_update")
 	#perform_check_update
 	#;;
-	#*)
-	#error "Unknown operation '$OPERATION'."
-	#;;
-	#esac
-}
-
-main
+	*)
+	error "COMANDO INCORRECTO '$OPERATION'."
+	break
+	;;
+	esac
+	done
 
 # vim:set ft=bash ts=2 sw=2 sts=2 et:
