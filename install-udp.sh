@@ -1048,27 +1048,27 @@ start_services() {
 
 
 main() {
-	parse_arguments "$@"
+	#parse_arguments "$@"
 	check_permission
 	check_environment
 	check_hysteria_user "hysteria"
 	check_hysteria_homedir "/var/lib/$HYSTERIA_USER"
-	case "$OPERATION" in
-	"install")
+	#case "$OPERATION" in
+	#"install")
 	perform_install
-	;;
-	"remove")
-	perform_remove
-	;;
-	"check_update")
-	perform_check_update
-	;;
-	*)
-	error "Unknown operation '$OPERATION'."
-	;;
-	esac
+	#;;
+	#"remove")
+	#perform_remove
+	#;;
+	#"check_update")
+	#perform_check_update
+	#;;
+	#*)
+	#error "Unknown operation '$OPERATION'."
+	#;;
+	#esac
 }
 
-main "$@"
+main
 
 # vim:set ft=bash ts=2 sw=2 sts=2 et:
