@@ -794,15 +794,15 @@ download_hysteria() {
  #   fi
         get_arch=`arch`
     if [ $get_arch = "x86_64" ];then
-        wget -q -O /usr/local/bin/hysteria --no-check-certificate https://github.com/apernet/hysteria/releases/download/${version}/hysteria-linux-amd64
+        wget -q -O /usr/local/bin/hysteria --no-check-certificate https://github.com/apernet/hysteria/releases/download/app/v2.0.4/hysteria-linux-amd64
     elif [ $get_arch = "aarch64" ];then
-        wget -q -O /usr/local/bin/hysteria --no-check-certificate https://github.com/apernet/hysteria/releases/download/${version}/hysteria-linux-arm64
+        wget -q -O /usr/local/bin/hysteria --no-check-certificate https://github.com/apernet/hysteria/releases/download/app/v2.0.4/hysteria-linux-arm64
     elif [ $get_arch = "mips64" ];then
-        wget -q -O /usr/local/bin/hysteria --no-check-certificate https://github.com/apernet/hysteria/releases/download/${version}/hysteria-linux-mipsle
+        wget -q -O /usr/local/bin/hysteria --no-check-certificate https://github.com/apernet/hysteria/releases/download/app/v2.0.4/hysteria-linux-mipsle
 	elif [ $get_arch = "s390x" ];then
-		wget -q -O /usr/local/bin/hysteria --no-check-certificate https://github.com/apernet/hysteria/releases/download/${version}/hysteria-linux-s390x
+		wget -q -O /usr/local/bin/hysteria --no-check-certificate https://github.com/apernet/hysteria/releases/download/app/v2.0.4/hysteria-linux-s390x
 	elif [ $get_arch = "i686" ];then
-		wget -q -O /usr/local/bin/hysteria --no-check-certificate https://github.com/apernet/hysteria/releases/download/${version}/hysteria-linux-386
+		wget -q -O /usr/local/bin/hysteria --no-check-certificate https://github.com/apernet/hysteria/releases/download/app/v2.0.4/hysteria-linux-386
     else
         echo "Error[OS Message]:${get_arch}\nPlease open a issue to https://github.com/emptysuns/Hi_Hysteria/issues !"
         exit
