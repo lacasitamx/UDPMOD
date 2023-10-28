@@ -885,6 +885,7 @@ perform_install_hysteria_binary() {
 
 perform_remove_hysteria_binary() {
 	remove_file "$EXECUTABLE_INSTALL_PATH"
+ rm /etc/domin
 }
 
 perform_install_hysteria_example_config() {
@@ -1061,7 +1062,7 @@ start_services() {
 	perform_install
 	break
 	;;
-	-re)
+	-r)
 	perform_remove
 	break
 	;;
