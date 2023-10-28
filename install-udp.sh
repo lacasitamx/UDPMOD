@@ -794,7 +794,7 @@ download_hysteria() {
  #   fi
         get_arch=`arch`
     if [ $get_arch = "x86_64" ];then
-        wget -q -O /usr/local/bin/hysteria --no-check-certificate https://github.com/apernet/hysteria/releases/download/app/${version}/hysteria-linux-amd64
+        wget -q -O /usr/local/bin/hysteria --no-check-certificate https://github.com/apernet/hysteria/releases/download/${version}/hysteria-linux-amd64
     elif [ $get_arch = "aarch64" ];then
         wget -q -O /usr/local/bin/hysteria --no-check-certificate https://github.com/apernet/hysteria/releases/download/${version}/hysteria-linux-arm64
     elif [ $get_arch = "mips64" ];then
@@ -1062,7 +1062,7 @@ start_services() {
 	perform_install
 	break
 	;;
-	-re)
+	-r)
 	perform_remove
 	break
 	;;
