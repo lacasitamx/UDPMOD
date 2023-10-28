@@ -925,9 +925,9 @@ perform_install() {
 		
 		local _is_update_required
 		
-		if [[ -n "$LOCAL_FILE" ]] || [[ -n "$VERSION" ]] || check_update; then
-			_is_update_required=1
-			fi
+		#if [[ -n "$LOCAL_FILE" ]] || [[ -n "$VERSION" ]] || check_update; then
+			#_is_update_required=1
+			#fi
 			
 			if [[ "x$FORCE" == "x1" ]]; then
 				if [[ -z "$_is_update_required" ]]; then
@@ -936,10 +936,10 @@ perform_install() {
 					_is_update_required=1
 					fi
 					
-					if [[ -z "$_is_update_required" ]]; then
-						echo "$(tgreen)La versión instalada está actualizada, no hay nada que hacer.$(treset)"
-						return
-						fi
+					#if [[ -z "$_is_update_required" ]]; then
+						#echo "$(tgreen)La versión instalada está actualizada, no hay nada que hacer.$(treset)"
+						#return
+						#fi
 						perform_install_hysteria_binary
 						perform_install_hysteria_example_config
 						perform_install_hysteria_home_legacy
